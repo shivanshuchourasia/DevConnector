@@ -145,7 +145,7 @@ router.get('/api/profile/user/:user_id', async (req, res) => {
   }
 })
 
-// @route      DELETE api/profile/me
+// @route      DELETE api/profile
 // @desc       Delete my profile, user and posts
 // @access     Private
 router.delete('/api/profile', auth, async (req, res) => {
@@ -153,6 +153,79 @@ router.delete('/api/profile', auth, async (req, res) => {
     await Profile.findOneAndRemove({ user: req.user.id })
     await User.findOneAndRemove({ id: req.user.id })
     res.json({ msg: 'User Deleted' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route      PUT api/profile/experience
+// @desc       Add profile experience
+// @access     Private
+router.put(
+  '/api/profile/experience',
+  [
+    auth,
+    [
+      check('title', 'Title is required')
+        .not()
+        .isEmpty(),
+      check('company', 'Company is required')
+        .not()
+        .isEmpty(),
+      check('from', 'From date is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req.body)
+
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() })
+
+    const experience = {
+      title: req.body.title,
+      company: req.body.company,
+      from: req.body.from
+    }
+
+    if (req.body.to) experience.to = req.body.to
+    if (req.body.location) experience.location = req.body.location
+    if (req.body.description) experience.description = req.body.description
+    if (req.body.current) experience.current = req.body.current
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id })
+
+      if (!profile) return res.json({ msg: 'Profile not found' })
+
+      profile.experience.unshift(experience)
+
+      await profile.save()
+
+      res.json(profile)
+    } catch (err) {
+      console.error(err.message)
+      res.status(500).send('Server Error')
+    }
+  }
+)
+
+// @route      DELETE api/profile/experience/:exp_id
+// @desc       Delete profile experience
+// @access     Private
+router.delete('/api/profile/experience/:exp_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id })
+
+    profile.experience = profile.experience.filter(
+      exp => exp.id != req.params.exp_id
+    )
+
+    await profile.save()
+
+    res.json(profile)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server Error')
