@@ -220,7 +220,83 @@ router.delete('/api/profile/experience/:exp_id', auth, async (req, res) => {
     const profile = await Profile.findOne({ user: req.user.id })
 
     profile.experience = profile.experience.filter(
-      exp => exp.id != req.params.exp_id
+      exp => exp.id !== req.params.exp_id
+    )
+
+    await profile.save()
+
+    res.json(profile)
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route      PUT api/profile/education
+// @desc       Add profile education
+// @access     Private
+router.put(
+  '/api/profile/education',
+  [
+    auth,
+    [
+      check('school', 'School is required')
+        .not()
+        .isEmpty(),
+      check('degree', 'Degree is required')
+        .not()
+        .isEmpty(),
+      check('from', 'From date is required')
+        .not()
+        .isEmpty(),
+      check('fieldofstudy', 'Field of Study is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req.body)
+
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() })
+
+    const education = {
+      school: req.body.school,
+      degree: req.body.degree,
+      from: req.body.from,
+      fieldofstudy: req.body.fieldofstudy
+    }
+
+    if (req.body.to) education.to = req.body.to
+    if (req.body.description) education.description = req.body.description
+    if (req.body.current) education.current = req.body.current
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id })
+
+      if (!profile) return res.json({ msg: 'Profile not found' })
+
+      profile.education.unshift(education)
+
+      await profile.save()
+
+      res.json(profile)
+    } catch (err) {
+      console.error(err.message)
+      res.status(500).send('Server Error')
+    }
+  }
+)
+
+// @route      DELETE api/profile/education/:edu_id
+// @desc       Delete profile education
+// @access     Private
+router.delete('/api/profile/education/:edu_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id })
+
+    profile.education = profile.education.filter(
+      edu => edu.id !== req.params.edu_id
     )
 
     await profile.save()
