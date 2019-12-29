@@ -4,6 +4,7 @@ const auth = require('../../middleware/auth')
 const { check, validationResult } = require('express-validator')
 const Post = require('../../models/Post')
 const User = require('../../models/User')
+const mongoose = require('mongoose')
 
 // @route      POST api/posts
 // @desc       Create a post
@@ -90,6 +91,61 @@ router.delete('/api/posts/:id', auth, async (req, res) => {
 
     await Post.findOneAndRemove({ _id: req.params.id })
     res.send('Post deleted')
+  } catch (err) {
+    console.error(err.message)
+    if (err.kind === 'ObjectId')
+      return res.status(404).json({ msg: 'Post not found' })
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route      PUT api/posts/like/:id
+// @desc       Like a post
+// @access     Private
+router.put('/api/posts/like/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id)
+
+    if (!post) return res.status(404).json({ msg: 'Post not found' })
+
+    const user = post.likes.filter(like => like.user.toString() === req.user.id)
+
+    if (user[0]) {
+      return res.status(400).json({ msg: 'Post already liked' })
+    }
+
+    post.likes.unshift({ user: mongoose.Types.ObjectId(req.user.id) })
+    await post.save()
+    res.json(post.likes)
+  } catch (err) {
+    console.error(err.message)
+    if (err.kind === 'ObjectId')
+      return res.status(404).json({ msg: 'Post not found' })
+    res.status(500).send('Server Error')
+  }
+})
+
+// @route      PUT api/posts/unlike/:id
+// @desc       Unlike a post
+// @access     Private
+router.put('/api/posts/unlike/:id', auth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id)
+
+    if (!post) return res.status(404).json({ msg: 'Post not found' })
+
+    const user = post.likes.filter(like => like.user.toString() === req.user.id)
+
+    if (user.length === 0) {
+      return res.status(400).json({ msg: 'Post is not liked' })
+    }
+
+    const users = post.likes.filter(
+      like => like.user.toString() !== req.user.id
+    )
+    post.likes = users
+    await post.save()
+    res.json(post.likes)
   } catch (err) {
     console.error(err.message)
     if (err.kind === 'ObjectId')
