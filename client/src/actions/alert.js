@@ -3,7 +3,6 @@ import { SET_ALERT, REMOVE_ALERT } from './types'
 
 export const setAlert = (msg, alertType, timeout = 5000) => dispatch => {
   const id = uuid()
-  console.log(id)
 
   dispatch({
     type: SET_ALERT,
