@@ -12,7 +12,7 @@ const User = require('../../models/User')
 // @access     Private
 router.get('/api/profile/me', auth, async (req, res) => {
   try {
-    const profile = await await Profile.findOne({ user: req.user.id })
+    const profile = await Profile.findOne({ user: req.user.id })
 
     if (!profile) {
       return res.status(400).json({ msg: 'There is no profile for this user' })
