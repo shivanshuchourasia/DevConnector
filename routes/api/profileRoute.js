@@ -152,7 +152,7 @@ router.get('/api/profile/user/:user_id', async (req, res) => {
 router.delete('/api/profile', auth, async (req, res) => {
   try {
     await Profile.findOneAndRemove({ user: req.user.id })
-    await User.findOneAndRemove({ id: req.user.id })
+    await User.findOneAndRemove({ _id: req.user.id })
     res.json({ msg: 'User Deleted' })
   } catch (err) {
     console.error(err.message)
