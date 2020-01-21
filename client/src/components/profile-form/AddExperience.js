@@ -87,7 +87,7 @@ const AddExperience = ({ addExperience, history }) => {
               value={current}
               checked={current}
             />{' '}
-            Current School or Bootcamp
+            Current Job
           </p>
         </div>
         <div class='form-group'>
