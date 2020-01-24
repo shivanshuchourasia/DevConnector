@@ -155,7 +155,7 @@ router.delete('/api/profile', auth, async (req, res) => {
     await Post.deleteMany({ user: req.user.id })
     await Profile.findOneAndRemove({ user: req.user.id })
     await User.findOneAndRemove({ _id: req.user.id })
-    res.json({ msg: 'User Deleted' })
+    res.status(200)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server Error')
