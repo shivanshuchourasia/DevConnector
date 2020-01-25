@@ -40,26 +40,61 @@ const Profile = ({
             {profile.company && <span> at {profile.company}</span>}
           </p>
           <p>{profile.location && <span>{profile.location}</span>}</p>
-          <div className='icons my-1'>
-            <Link to='#' target='_blank' rel='noopener noreferrer'>
-              <i className='fas fa-globe fa-2x'></i>
-            </Link>
-            <Link to='#' target='_blank' rel='noopener noreferrer'>
-              <i className='fab fa-twitter fa-2x'></i>
-            </Link>
-            <Link to='#' target='_blank' rel='noopener noreferrer'>
-              <i className='fab fa-facebook fa-2x'></i>
-            </Link>
-            <Link to='#' target='_blank' rel='noopener noreferrer'>
-              <i className='fab fa-linkedin fa-2x'></i>
-            </Link>
-            <Link to='#' target='_blank' rel='noopener noreferrer'>
-              <i className='fab fa-youtube fa-2x'></i>
-            </Link>
-            <Link to='#' target='_blank' rel='noopener noreferrer'>
-              <i className='fab fa-instagram fa-2x'></i>
-            </Link>
-          </div>
+          {profile.social && (
+            <div className='icons my-1'>
+              <Link to='#' target='_blank' rel='noopener noreferrer'>
+                <i className='fas fa-globe fa-2x'></i>
+              </Link>
+              {profile.social.twitter && (
+                <a
+                  href={profile.social.twitter}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <i className='fab fa-twitter fa-2x'></i>
+                </a>
+              )}
+              {profile.social.facebook && (
+                <a
+                  href={profile.social.facebook}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <i className='fab fa-facebook fa-2x'></i>
+                </a>
+              )}
+
+              {profile.social.linkedin && (
+                <a
+                  href={profile.social.linkedin}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <i className='fab fa-linkedin fa-2x'></i>
+                </a>
+              )}
+
+              {profile.social.youtube && (
+                <a
+                  href={profile.social.youtube}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <i className='fab fa-youtube fa-2x'></i>
+                </a>
+              )}
+
+              {profile.social.instagram && (
+                <a
+                  href={profile.social.instagram}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <i className='fab fa-instagram fa-2x'></i>
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         {/* About */}
