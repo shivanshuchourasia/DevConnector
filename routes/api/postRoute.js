@@ -194,7 +194,7 @@ router.put(
   }
 )
 
-// @route      DELETE api/posts/comment/post_id
+// @route      DELETE api/posts/comment/post_id/comment_id
 // @desc       Delete comment on a post
 // @access     Private
 router.delete(
