@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { getPosts } from '../../actions/post'
 import Spinner from '../layout/Spinner'
 import PostItem from './PostItem'
+import PostForm from './PostForm'
 import PropTypes from 'prop-types'
 
 const Posts = ({ getPosts, post: { posts, loading } }) => {
@@ -20,21 +21,7 @@ const Posts = ({ getPosts, post: { posts, loading } }) => {
         <i className='fas fa-user'></i> Welcome to the community!
       </p>
 
-      <div className='post-form'>
-        <div className='bg-primary p'>
-          <h3>Say Something...</h3>
-        </div>
-        <form className='form my-1'>
-          <textarea
-            name='text'
-            cols='30'
-            rows='5'
-            placeholder='Create a post'
-            required
-          ></textarea>
-          <input type='submit' className='btn btn-dark my-1' value='Submit' />
-        </form>
-      </div>
+      <PostForm />
 
       <div className='posts'>
         {posts.map(post => (
