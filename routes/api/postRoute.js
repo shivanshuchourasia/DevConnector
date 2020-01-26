@@ -212,7 +212,7 @@ router.delete(
 
       post.comments = newComment
       await post.save()
-      res.send('Comment Deleted')
+      res.json(post.comments)
     } catch (err) {
       console.error(err.message)
       if (err.kind === 'ObjectId')

@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { getPost } from '../../actions/post'
 import Spinner from '../layout/Spinner'
+import CommentForm from './CommentForm'
 import PropTypes from 'prop-types'
 
 const Post = ({ getPost, match, post: { post, loading } }) => {
@@ -29,21 +30,7 @@ const Post = ({ getPost, match, post: { post, loading } }) => {
         </div>
       </div>
 
-      <div className='post-form'>
-        <div className='bg-primary p'>
-          <h3>Leave A Comment</h3>
-        </div>
-        <form className='form my-1'>
-          <textarea
-            name='text'
-            cols='30'
-            rows='5'
-            placeholder='Comment on this post'
-            required
-          ></textarea>
-          <input type='submit' className='btn btn-dark my-1' value='Submit' />
-        </form>
-      </div>
+      <CommentForm />
 
       <div className='comments'>
         <div className='post bg-white p-1 my-1'>

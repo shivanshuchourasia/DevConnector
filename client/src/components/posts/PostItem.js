@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Moment from 'react-moment'
@@ -19,6 +19,7 @@ const PostItem = ({ post, auth, addLike, removeLike, deletePost }) => {
         <p className='post-date'>
           Posted on <Moment format='DD/MM/YYYY'>{post.date}</Moment>
         </p>
+
         <button
           onClick={e => addLike(post._id)}
           type='button'
