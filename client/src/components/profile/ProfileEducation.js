@@ -25,10 +25,7 @@ const ProfileEducation = ({ education }) => {
       {education.description && (
         <Fragment>
           <p>
-            <strong>Description: </strong>Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Dignissimos placeat, dolorum ullam ipsam, sapiente
-            suscipit dicta eius velit amet aspernatur asperiores modi quidem
-            expedita fugit.
+            <strong>Description: </strong>{education.description}
           </p>
         </Fragment>
       )}
